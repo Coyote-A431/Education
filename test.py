@@ -8,7 +8,7 @@ import random
 #     print(num_to_guess)
 #     return num_to_guess
 
-def get_validation():
+def validation():
     is_valid_input = False
     while not is_valid_input:
         try:
@@ -24,6 +24,10 @@ def get_validation():
             print('Try again')
         print(u_num)
     return u_num
+
+def guess(validation):
+    print(validation())
+    return validation()
 
 
 ###

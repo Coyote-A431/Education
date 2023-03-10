@@ -131,7 +131,7 @@ print_week_day(year, month, day)
 ###
 
 
-class datetime:
+class datetime2:
 
     MONTHS_WITH_MAX_DAYS_SET = {1, 3, 5, 7, 8, 10, 12}
 
@@ -165,9 +165,9 @@ class datetime:
                     local_year = result[2]
                     if len(result) == 3 and local_month > 0 and local_month < 13 and local_year >= 1970:
                        is_month_with_max_days = local_day in range(1, 32) \
-                                                and local_month in datetime.MONTHS_WITH_MAX_DAYS_SET
+                                                and local_month in datetime2.MONTHS_WITH_MAX_DAYS_SET
                        is_month_with_min_days = local_day in range(1, 31) and local_month != 2 \
-                                                and local_month not in datetime.MONTHS_WITH_MAX_DAYS_SET
+                                                and local_month not in datetime2.MONTHS_WITH_MAX_DAYS_SET
                        is_feb_in_leap_year = local_day in range(1, 30) \
                                              and (local_year % 100 != 0 and local_year % 4 == 0 or local_year % 400 == 0)
                        is_feb_in_not_leap_year = (local_year % 100 == 0 and local_year % 4 != 0 or local_year % 400 != 0) \
@@ -197,11 +197,11 @@ class datetime:
         print(leap_status)
 
     def print_chinese_year(self):
-        result_chinese_year = f'{self.year} is year of the {datetime.CHINESE_CALENDAR[self.year % 12]}'
+        result_chinese_year = f'{self.year} is year of the {datetime2.CHINESE_CALENDAR[self.year % 12]}'
         print(result_chinese_year)
 
     def print_month(self):
-        string_month = datetime.MONTHS[self.month]
+        string_month = datetime2.MONTHS[self.month]
         print(string_month)
 
     def print_quarter(self):
@@ -228,13 +228,13 @@ class datetime:
         first_year_nums = local_year // 100
         last_year_nums = local_year % 100
         week_day = (self.day + ((13 * local_month - 1) // 5) + last_year_nums + (last_year_nums // 4 + first_year_nums // 4 - 2 * first_year_nums + 777)) % 7
-        print(datetime.WEEK_DAYS[week_day])
+        print(datetime2.WEEK_DAYS[week_day])
 
     def print_number_day(self):
         number_day = 0
         iterator = 1
         while iterator < self.month:
-            number_day += datetime.DAYS_IN_MONTHS[iterator]
+            number_day += datetime2.DAYS_IN_MONTHS[iterator]
             iterator += 1
         if self.year % 100 % 4 != 0 and self.month > 2:
             number_day = number_day + self.day - 1
@@ -245,7 +245,7 @@ class datetime:
 
 
 
-test = datetime()
+test = datetime2()
 test.print_leap_year()
 test.print_chinese_year()
 test.print_month()
