@@ -1,87 +1,84 @@
 import random
-# num_to_guess = random.randint(1, 100)
-# print(num_to_guess)
-# user_guess = -1
 
-# def rand_num():
-#     num_to_guess = random.randint(1, 100)
-#     print(num_to_guess)
-#     return num_to_guess
-
-def validation():
-    is_valid_input = False
-    while not is_valid_input:
-        try:
-            u_num = input('Guess the number: ')
-            u_num = int(u_num)
-            # is_valid_input = True
-        except ValueError:
-            print('You entered not number or left empty field')
-        if u_num == 61:
-            print('You are right!')
-            is_valid_input = True
-        else:
-            print('Try again')
-        print(u_num)
-    return u_num
-
-def guess(validation):
-    print(validation())
-    return validation()
-
-
-###
-
-
-class guessing:
-
-    glob = -1
+class tst:
 
     def __init__(self):
-        self.number_to_guess = self.rand_num()
+        self.num_to_guess = self.rn()
 
-    def rand_num(self):
+    def rn(self):
         random_number = random.randint(1, 100)
+        print(random_number)
         return random_number
 
-    def comparison(self):
-        is_first_iteration = True
-        is_valid_input = False
-        previous_input = -1
-        while not is_valid_input:
-            try:
-                user_num = input('Guess the number from 1 to 100: ')
-                current_input = int(user_num)
-                if current_input == self.number_to_guess:
-                    print('You are great!')
+    def valid(self):
+        try:
+            is_valid_input = False
+            while not is_valid_input:
+                try:
+                    user_num = input('Guess the number: ')
+                    current_input = int(user_num)
                     is_valid_input = True
-                elif current_input in range(self.number_to_guess - 10, self.number_to_guess + 10):
+                except ValueError:
+                    print('You entered not number or left empty field')
+        except KeyboardInterrupt:
+            print('asdf')
+        return current_input
+
+    def comp(self, random_number, current_input):
+        is_right_input = False
+        is_first_iteration = True
+        previous_input = -1
+        while not is_right_input:
+            current_input = self.valid()
+            try:
+                if current_input == self.num_to_guess:
+                    print('You are great!')
+                    is_right_input = True
+                elif current_input in range(self.num_to_guess - 10, self.num_to_guess + 11):
                     print('Very close')
-                elif current_input in range(self.number_to_guess - 25, self.number_to_guess + 25)\
-                        and current_input not in range(self.number_to_guess - 10, self.number_to_guess + 10):
+                elif current_input in range(self.num_to_guess - 25, self.num_to_guess + 26) \
+                        and current_input not in range(self.num_to_guess - 10, self.num_to_guess + 11):
                     print('Close')
-                elif current_input in range(self.number_to_guess - 50, self.number_to_guess + 50)\
-                        and current_input not in range(self.number_to_guess - 25, self.number_to_guess + 25):
+                elif current_input in range(self.num_to_guess - 50, self.num_to_guess + 51) \
+                        and current_input not in range(self.num_to_guess - 25, self.num_to_guess + 26):
                     print('Far')
                 else:
                     print('Very far')
-                if not is_first_iteration or previous_input == current_input:
-                    if previous_input < self.number_to_guess:
-                        if current_input > previous_input:
-                            print('Closer')
-                        else:
-                            print('Further')
-                    else:
-                        if current_input > previous_input:
-                            print('Further')
-                        else:
-                            print('Closer')
+                if not is_first_iteration:
+                    if previous_input != current_input:
+                        if previous_input < self.num_to_guess and not is_right_input:
+                            if current_input > previous_input:
+                                print('Closer')
+                            else:
+                                print('Further')
+                        elif previous_input > self.num_to_guess and not is_right_input:
+                            if current_input > previous_input:
+                                print('Further')
+                            else:
+                                print('Closer')
                 is_first_iteration = False
                 previous_input = current_input
-            except ValueError:
-                print('You entered not number or left empty field')
+            except KeyboardInterrupt:
+                print('smth')
         return current_input
 
+    def func(self):
+        try:
+            self.comp(self.num_to_guess, self.valid())
+        except KeyboardInterrupt:
+            print('Fock')
 
-test = guessing()
-test.comparison()
+
+# tst = tst()
+# tst.func()
+# tst.valid()
+# tst.comp()
+
+def test(a = False):
+    if not a:
+        print(1)
+    else:
+        print(2)
+
+test(1)
+

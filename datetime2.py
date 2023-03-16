@@ -1,3 +1,5 @@
+import random
+
 CHINESE_CALENDAR = {0: 'monkey', 1: 'rooster', 2: 'dog', 3: 'pig', 4: 'rat', 5: 'bull', 6: 'tiger', 7: 'rabbit',
                     8: 'dragon', 9: 'snake', 10: 'horse', 11: 'sheep'}
 
@@ -114,18 +116,18 @@ def print_week_day(year, month, day):
 ###
 
 
-date_list = validation()
-day = date_list[0]
-month = date_list[1]
-year = date_list[2]
-date = date_list[3]
-print_leap_year(year, date)
-print_chinese_year(year)
-print_quarter(month)
-print_month(month)
-print(day)
-print_number_day(day, month, year)
-print_week_day(year, month, day)
+# date_list = validation()
+# day = date_list[0]
+# month = date_list[1]
+# year = date_list[2]
+# date = date_list[3]
+# print_leap_year(year, date)
+# print_chinese_year(year)
+# print_quarter(month)
+# print_month(month)
+# print(day)
+# print_number_day(day, month, year)
+# print_week_day(year, month, day)
 
 
 ###
@@ -145,46 +147,66 @@ class datetime2:
 
     DAYS_IN_MONTHS = {1: 31, 2: 29, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
-    def __init__(self):
-        data_list = self.validation()
+    def __init__(self, a = False):
+        self.a = a
+        data_list = self.validation(self.a)
         self.day = data_list[0]
         self.month = data_list[1]
         self.year = data_list[2]
         self.date = data_list[3]
 
-    def validation(self):
-        is_valid_input = False
-        while not is_valid_input:
-            try:
-                user_date = input('Enter date in format dd.mm.yyyy: ')
-                string_list = user_date.split('.')
-                result = list(map(int, string_list))
-                if len(result) == 3:
-                    local_day = result[0]
-                    local_month = result[1]
-                    local_year = result[2]
-                    if len(result) == 3 and local_month > 0 and local_month < 13 and local_year >= 1970:
-                       is_month_with_max_days = local_day in range(1, 32) \
-                                                and local_month in datetime2.MONTHS_WITH_MAX_DAYS_SET
-                       is_month_with_min_days = local_day in range(1, 31) and local_month != 2 \
-                                                and local_month not in datetime2.MONTHS_WITH_MAX_DAYS_SET
-                       is_feb_in_leap_year = local_day in range(1, 30) \
-                                             and (local_year % 100 != 0 and local_year % 4 == 0 or local_year % 400 == 0)
-                       is_feb_in_not_leap_year = (local_year % 100 == 0 and local_year % 4 != 0 or local_year % 400 != 0) \
-                                                 and local_day in range(1, 29)
-                       if is_month_with_max_days or is_month_with_min_days or is_feb_in_leap_year \
-                          or is_feb_in_not_leap_year:
-                           result.append(user_date)
-                           is_valid_input = True
-                       else:
-                           print('You entered wrong date')
+    def validation(self, a):
+        if self.a:
+            result = []
+            random_year = random.randint(1970, 9999)
+            random_month = random.randint(1, 12)
+            if random_month in datetime2.MONTHS_WITH_MAX_DAYS_SET:
+                random_day = random.randint(1, 31)
+            elif random_month not in datetime2.MONTHS_WITH_MAX_DAYS_SET and random_month != 2:
+                random_day = random.randint(1, 30)
+            elif random_month == 2 and random_year % 100 % 4 == 0:
+                random_day = random.randint(1, 29)
+            else:
+                random_day = random.randint(1, 28)
+            random_date = str(random_day) + '.' + str(random_month) + '.' + str(random_year)
+            result.append(random_day)
+            result.append(random_month)
+            result.append(random_year)
+            result.append(random_date)
+            return result
+        else:
+            is_valid_input = False
+            while not is_valid_input:
+                try:
+                    user_date = input('Enter date in format dd.mm.yyyy: ')
+                    string_list = user_date.split('.')
+                    result = list(map(int, string_list))
+                    if len(result) == 3:
+                        local_day = result[0]
+                        local_month = result[1]
+                        local_year = result[2]
+                        if len(result) == 3 and local_month > 0 and local_month < 13 and local_year >= 1970:
+                           is_month_with_max_days = local_day in range(1, 32) \
+                                                    and local_month in datetime2.MONTHS_WITH_MAX_DAYS_SET
+                           is_month_with_min_days = local_day in range(1, 31) and local_month != 2 \
+                                                    and local_month not in datetime2.MONTHS_WITH_MAX_DAYS_SET
+                           is_feb_in_leap_year = local_day in range(1, 30) \
+                                                 and (local_year % 100 != 0 and local_year % 4 == 0 or local_year % 400 == 0)
+                           is_feb_in_not_leap_year = (local_year % 100 == 0 and local_year % 4 != 0 or local_year % 400 != 0) \
+                                                     and local_day in range(1, 29)
+                           if is_month_with_max_days or is_month_with_min_days or is_feb_in_leap_year \
+                              or is_feb_in_not_leap_year:
+                               result.append(user_date)
+                               is_valid_input = True
+                           else:
+                               print('You entered wrong date')
+                        else:
+                            print('You entered wrong date')
                     else:
                         print('You entered wrong date')
-                else:
+                except ValueError:
                     print('You entered wrong date')
-            except ValueError:
-                print('You entered wrong date')
-        return result
+            return result
 
     def print_leap_year(self):
         if self.year % 100 % 4 == 0:
@@ -193,7 +215,7 @@ class datetime2:
         else:
             is_leap_year = False
             leap_status = self.date + ' is not leap year'
-        print(is_leap_year)
+        # print(is_leap_year)
         print(leap_status)
 
     def print_chinese_year(self):
@@ -242,16 +264,19 @@ class datetime2:
             number_day = number_day + self.day
         print(number_day)
 
+    def all_func(self):
+        self.print_leap_year()
+        self.print_chinese_year()
+        self.print_month()
+        self.print_quarter()
+        self.print_day()
+        self.print_week_day()
+        self.print_number_day()
+
 
 
 
 test = datetime2()
-test.print_leap_year()
-test.print_chinese_year()
-test.print_month()
-test.print_quarter()
-test.print_day()
-test.print_week_day()
-test.print_number_day()
+test.all_func()
 
 
