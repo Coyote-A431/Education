@@ -147,16 +147,16 @@ class datetime2:
 
     DAYS_IN_MONTHS = {1: 31, 2: 29, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
-    def __init__(self, a = False):
-        self.a = a
-        data_list = self.validation(self.a)
+    def __init__(self, random_date = False):
+        self.random_date = random_date
+        data_list = self.validation(random_date)
         self.day = data_list[0]
         self.month = data_list[1]
         self.year = data_list[2]
         self.date = data_list[3]
 
-    def validation(self, a):
-        if self.a:
+    def validation(self, random_date):
+        if random_date:
             result = []
             random_year = random.randint(1970, 9999)
             random_month = random.randint(1, 12)
@@ -210,12 +210,9 @@ class datetime2:
 
     def print_leap_year(self):
         if self.year % 100 % 4 == 0:
-            is_leap_year = True
             leap_status = self.date + ' is leap year'
         else:
-            is_leap_year = False
             leap_status = self.date + ' is not leap year'
-        # print(is_leap_year)
         print(leap_status)
 
     def print_chinese_year(self):
@@ -276,7 +273,7 @@ class datetime2:
 
 
 
-test = datetime2()
+test = datetime2(1)
 test.all_func()
 
 

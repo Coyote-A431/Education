@@ -56,7 +56,7 @@ class guessing:
                 new_file.writelines(self.comparison(self.number_to_guess), self.validation())
         # self.comparison(self.number_to_guess)
 
-    def comparison(self, a, b):
+    def comparison(self):
         is_first_iteration = True
         is_valid_input = False
         previous_input = -1
@@ -131,6 +131,9 @@ class guessing:
         start_time_filename = self.start_time.replace(':', '.')
         log_filename = filename_without_extension + '_' + start_time_filename + '.txt'
         filepath = os.path.join(log_dir_path, log_filename)
+        print(filepath)
+        with open(filepath, 'w+') as new_file:
+            new_file.write('1) Start time: ' + self.start_time + '\n')
         return filepath
         # with open(filepath, 'w+') as new_file:
         #     new_file.write('1) Start time: ' + self.start_time + '\n')
