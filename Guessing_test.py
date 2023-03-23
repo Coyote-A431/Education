@@ -42,14 +42,14 @@ class Guess_Test:
                 print('Far')
             else:
                 print('Very far')
-            if not is_first_iteration:
+            if not is_first_iteration and not is_user_guess:
                 if previous_input != current_input:
-                    if previous_input < number_to_guess and not is_user_guess:
+                    if previous_input < number_to_guess:
                         if current_input > previous_input:
                             print('Closer')
                         else:
                             print('Further')
-                    elif previous_input > number_to_guess and not is_user_guess:
+                    elif previous_input > number_to_guess:
                         if current_input > previous_input:
                             print('Further')
                         else:
@@ -60,12 +60,10 @@ class Guess_Test:
             with open(self.filepath, 'a+') as err_report:
                 err_report.write(str(err) + '\n')
                 err_report.close()
-            print(err)
         except KeyboardInterrupt:
             with open(self.filepath, 'a+') as err_report:
                 err_report.write('User ended script' + '\n')
                 err_report.close()
-            print('User ended script')
         return current_input
 
     def create_logs(self):
@@ -89,7 +87,7 @@ class Guess_Test:
             new_file.close()
         return filepath
 
-    def function(self):
+    def __function(self):
         try:
             with open(self.filepath, 'a+') as user_values:
                 user_values.write('2) User values: ' + '\n')
@@ -98,8 +96,8 @@ class Guess_Test:
             try_counter = 0
             while not is_user_guess:
                 try:
-                    user_input = self.validation()
-                    user_input = int(user_input)
+                    valid_value = self.validation()
+                    user_input = int(valid_value)
                     self.comparison(user_input, number_to_guess)
                     if user_input == number_to_guess:
                         try_counter += 1
@@ -109,13 +107,11 @@ class Guess_Test:
                             add_last_points.write('3) End time: ' + end_time + '\n')
                             add_last_points.write('4) User tries: ' + str(try_counter) + '\n')
                             add_last_points.close()
-                    else:
-                        is_valid_input = False
                     try_counter += 1
                 except ValueError:
                     try_counter += 1
                     print('You entered not number or left empty field')
-        except BaseException as err:
+        except Exception as err:
             with open(self.filepath, 'a+') as err_report:
                 err_report.write(str(err) + '\n')
                 err_report.close()
@@ -124,8 +120,14 @@ class Guess_Test:
                 err_report.write('User ended script' + '\n')
                 err_report.close()
 
+    def function(self):
+        self.__function()
+
 
 test = Guess_Test()
 test.function()
+
+
+# test._Guess_Test__function()
 
 
