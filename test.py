@@ -1,10 +1,9 @@
-class test:
-    def __init__(self):
-
-
+import re
 # tst = test()
 
-a = '2) Sample Text'
+r = input()
+match = re.fullmatch('[а-яА-ЯёЁ]+', r)
+print('yes' if match else 'no')
 
-b = a.strip('2) ')
-print(b)
+
+

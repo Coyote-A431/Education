@@ -1,4 +1,5 @@
 import os
+import re
 
 
 def get_path():
@@ -133,6 +134,8 @@ def create_class_objects():
     return animal_dict
 
 animal_dict = create_class_objects()
+print(animal_dict[1].name)
+
 
 def print_animal_dict(animal_dict):
     for animal_number, animal_name in animal_dict.items():
@@ -140,7 +143,6 @@ def print_animal_dict(animal_dict):
 
 def show_animal_data(animal_dict):
     is_correct_input = False
-    user_input = ''
     print('Выберите животное из списка: ')
     for animal_number, animal_name in animal_dict.items():
         print(f'{animal_number}: {animal_name}')
@@ -148,7 +150,7 @@ def show_animal_data(animal_dict):
         user_input = input()
         try:
             user_input_int = int(user_input)
-            if user_input_int in range(len(animal_dict)):
+            if user_input_int in range(1, len(animal_dict) + 1):
                 is_correct_input = True
             else:
                 raise ValueError
@@ -156,8 +158,143 @@ def show_animal_data(animal_dict):
             print('Введён некорректный номер')
     animal_dict[user_input_int].info()
 
-show_animal_data(animal_dict)
+# show_animal_data(animal_dict)
 
+def change_animal_data(animal_dict):
+    is_correct_input_animal_num = False
+    print('Выберите животное из списка: ')
+    for animal_number, animal_name in animal_dict.items():
+        print(f'{animal_number}: {animal_name}')
+    while not is_correct_input_animal_num:
+        user_input = input()
+        try:
+            user_input_int = int(user_input)
+            if user_input_int in range(1, len(animal_dict) + 1):
+                is_correct_input_animal_num = True
+            else:
+                raise ValueError
+        except ValueError:
+            print('Введён некорректный номер')
+    is_correct_input_attribute_num = False
+    print('Выберите пункт, который хотите изменить: ')
+    index = 1
+    for attribute_name_rus in Animal.full_attribute_names_map.values():
+        print(f'{index}: {attribute_name_rus}')
+        index += 1
+    while not is_correct_input_attribute_num:
+        user_input_attribute = input()
+        try:
+            user_input_attribute_int = int(user_input_attribute)
+            if user_input_attribute_int in range(1, index + 1):
+                if user_input_attribute_int == 1:
+                    new_animal_value = input('Введите новое значение: ')
+                    is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ]+', new_animal_value)
+                    print('Применить корректировки (y/n)?')
+                    print('Значение до изменения: ', animal_dict[user_input_int].name)
+                    print('Значение после изменения: ', new_animal_value)
+                    yes_or_no = input()
+                    # if yes_or_no == 'y':
+                    #     animal_dict[user_input_int].name = new_animal_value
+                    #     is_correct_input_attribute_num = True
+                    # elif yes_or_no == 'n':
+
+                # elif user_input_attribute_int == 2:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].genus)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].genus = new_animal_value
+                #         print(animal_dict[user_input_int].genus)
+                #         is_correct_input_attribute_num = True
+                # elif user_input_attribute_int == 3:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].species)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].species = new_animal_value
+                #         print(animal_dict[user_input_int].species)
+                #         is_correct_input_attribute_num = True
+                # elif user_input_attribute_int == 4:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].avg_lifetime)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].avg_lifetime = new_animal_value
+                #         print(animal_dict[user_input_int].avg_lifetime)
+                #         is_correct_input_attribute_num = True
+                # elif user_input_attribute_int == 5:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].avg_weight)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].avg_height = new_animal_value
+                #         print(animal_dict[user_input_int].avg_height)
+                #         is_correct_input_attribute_num = True
+                # elif user_input_attribute_int == 6:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].avg_height)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].avg_weight = new_animal_value
+                #         print(animal_dict[user_input_int].avg_weight)
+                #         is_correct_input_attribute_num = True
+                # elif user_input_attribute_int == 7:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].place)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].place = new_animal_value
+                #         print(animal_dict[user_input_int].place)
+                #         is_correct_input_attribute_num = True
+                # elif user_input_attribute_int == 8:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     print('Применить корректировки (y/n)?')
+                #     print('Значение до изменения: ', animal_dict[user_input_int].country)
+                #     print('Значение после изменения: ', new_animal_value)
+                #     yes_or_no = input()
+                #     if yes_or_no == 'y':
+                #         animal_dict[user_input_int].country = new_animal_value
+                #         print(animal_dict[user_input_int].country)
+                #         is_correct_input_attribute_num = True
+                else:
+                    print('Введён некорректный номер')
+            else:
+                raise ValueError
+        except ValueError:
+            print('Введён некорректный номер')
+
+change_animal_data(animal_dict)
+
+# full_attribute_names_map = {'name': 'Наименование',
+#                             'genus': 'Род',
+#                             'species': 'Вид',
+#                             'avg_lifetime': 'Средняя продолжительность жизни',
+#                             'avg_height': 'Средний рост',
+#                             'avg_weight': 'Средняя масса тела',
+#                             'place': 'Место обитания',
+#                             'country': 'Страна обитания',
+#                             }
+#
+# val = Animal.full_attribute_names_map.values()
+# print(val)
+# j = 1
+# for i in full_attribute_names_map.values():
+#     print(f'{j}: {i}')
+#     j += 1
+
+# TODO setattr
 
 
 

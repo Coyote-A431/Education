@@ -199,11 +199,11 @@ class datetime2:
                                result.append(user_date)
                                is_valid_input = True
                            else:
-                               print('You entered wrong date')
+                               raise ValueError
                         else:
-                            print('You entered wrong date')
+                            raise ValueError
                     else:
-                        print('You entered wrong date')
+                        raise ValueError
                 except ValueError:
                     print('You entered wrong date')
             return result
@@ -273,7 +273,7 @@ class datetime2:
 
 
 
-test = datetime2(1)
+test = datetime2()
 test.all_func()
 
 
