@@ -84,7 +84,6 @@ class Guess_Test:
         filepath = os.path.join(log_dir_path, log_filename)
         with open(filepath, 'w+') as new_file:
             new_file.write('1) Start time: ' + start_time + '\n')
-            new_file.close()
         return filepath
 
     def __function(self):

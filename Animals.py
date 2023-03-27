@@ -1,5 +1,6 @@
 import os
 import re
+import pickle
 
 
 def get_path():
@@ -32,7 +33,7 @@ def get_file_list(current_path):
 # get_file_list(current_path)
 
 def get_parsed_data(current_path):
-    # user_path = r'C:\Users\Unknown\Desktop\Education\Animal'
+    current_path = r'C:\Users\Unknown\Desktop\Education\Animal'
     file_list = []
     with os.scandir(current_path) as files:
         for file in files:
@@ -58,6 +59,8 @@ def get_parsed_data(current_path):
         animal_data_dict[file_name] = animal_attributes_dict
     return animal_data_dict
 
+p = get_parsed_data(current_path)
+# print(p)
 
 class Animal:
 
@@ -91,28 +94,6 @@ class Animal:
         for attribute_name, attribute_value in attributes_dict.items():
             print(self.full_attribute_names_map[attribute_name] + ': ' + attribute_value)
 
-    # def choose_option(self):
-    #     current_path = self.get_path()
-    #     current_file_list = self.get_file_list(current_path)
-    #     is_corr = False
-    #     while not is_corr:
-    #         print('1) Вывести более подробную информацию о животном',
-    #               '2) Скорректировать информацию',
-    #               '3) Сохранить и выйти',
-    #               '4) Выйти без сохранения', sep='\n')
-    #         user_choice = int(input('Введите интересующий Вас пункт: '))
-    #         if user_choice == 1 or user_choice == 2:
-    #             user_animal = input('Выберите животное из списка: ')
-    #             corr_anim = user_animal + '.txt'
-    #             correct_path = current_path + '\\' + user_animal + '.txt'
-    #             if corr_anim in current_file_list:
-    #                 with open(correct_path, 'r', encoding='utf-8') as file:
-    #                     a = file.read().splitlines()
-    #                     print('\n'.join(a))
-    #                     file.close()
-    #         if user_choice == 4:
-    #             is_corr = True
-
 def create_class_objects():
     parsed_animal_dict = get_parsed_data(current_path)
     animal_dict = {}
@@ -136,14 +117,15 @@ def create_class_objects():
     return animal_dict
 
 animal_dict = create_class_objects()
-# print(animal_dict[1].name)
+# print(animal_dict)
+# print(animal_dict[1])
 
 
 def print_animal_dict(animal_dict):
     for animal_name in animal_dict.values():
         print(f'{animal_name}')
 
-print_animal_dict(animal_dict)
+# print_animal_dict(animal_dict)
 
 def show_animal_data(animal_dict):
     is_correct_input = False
@@ -166,6 +148,7 @@ def show_animal_data(animal_dict):
 
 def change_animal_data(animal_dict):
     is_correct_input_animal_num = False
+    changed_animal_file_names_list = []
     print('Выберите животное из списка: ')
     for animal_number, animal_name in animal_dict.items():
         print(f'{animal_number}: {animal_name}')
@@ -207,6 +190,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].name = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -230,6 +215,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].genus = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -253,6 +240,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].species = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -275,6 +264,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].avg_lifetime = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -297,6 +288,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].avg_height = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -319,6 +312,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].avg_weight = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -342,6 +337,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].place = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -365,6 +362,8 @@ def change_animal_data(animal_dict):
                         yes_or_no = input()
                         if yes_or_no == 'y':
                             animal_dict[user_input_int].country = new_animal_value
+                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
+                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -377,11 +376,34 @@ def change_animal_data(animal_dict):
                 raise ValueError
         except ValueError:
             print('Введён некорректный номер')
+    return animal_dict[user_input_int].file_name
 
-# change_animal_data(animal_dict)
+# b = change_animal_data(animal_dict)
+# print(b)
+# changed_animal_file_names_list = ['Cat.txt']
+
+def save_and_exit(current_path, changed_animal_file_names_list):
+    # with open(r'C:\Users\Unknown\Desktop\Education\Animal\Cat.txt', 'w+') as writer:
+    # for animal_file_name in animal_dict.__
+    for index in animal_dict:
+        if animal_dict[index].file_name in changed_animal_file_names_list:
+            open(current_path + '\\' + animal_dict[index].file_name, 'w').close()
+            for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
+                # open(current_path + '\\' + animal_dict[index].file_name, 'w').close()
+                # del_previous_info = open(current_path + '\\' + animal_dict[index].file_name, 'r+', encoding='utf-8')
+                # del_previous_info.truncate(0)
+                with open(current_path + '\\' + animal_dict[index].file_name, 'a+', encoding='utf-8') as writer:
+                    writer.write(f'{attribute_name}: {animal_dict[index].__dict__[attribute_prog_name]}\n')
+                    # print(f'{attribute_name}: {animal_dict[index].__dict__[attribute_prog_name]}')
+    # for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
+    #     print(f'{attribute_name}: {animal_dict[1].__dict__[attribute_prog_name]}')
+        # writer.write(Animal.full_attribute_names_map)
+
+# save_and_exit(current_path, changed_animal_file_names_list)
 
 def main_menu():
     is_correct_point = False
+    changed_animal_file_names_list = []
     while not is_correct_point:
         print('1: Вывести более подробную информацию о животном',
               '2: Скорректировать информацию',
@@ -392,9 +414,12 @@ def main_menu():
         if user_main_menu_choice == '1':
             show_animal_data(animal_dict)
         elif user_main_menu_choice == '2':
-            change_animal_data(animal_dict)
+            changed_animal = change_animal_data(animal_dict)
+            if changed_animal not in changed_animal_file_names_list:
+                changed_animal_file_names_list.append(changed_animal)
         elif user_main_menu_choice == '3':
-            pass
+            save_and_exit(current_path, changed_animal_file_names_list)
+            is_correct_point = True
         elif user_main_menu_choice == '4':
             is_correct_point = True
         else:
@@ -405,8 +430,7 @@ main_menu()
 
 # TODO setattr
 
-
-
+# print(animal_dict.__dict__)
 
 
 
