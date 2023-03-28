@@ -44,11 +44,18 @@ def get_parsed_data(current_path):
     # for animal in animal_list:
     #     f.append(f'{user_path}\\{animal}')
     animal_data_dict = {}  # Словарь {имя файла: значения файла в виде словаря}
+    # file_content = ''
     for file_name, path in files_locations.items():
         with open(path, 'r', encoding='utf-8') as reader:
             file_content = reader.read()
+            # for all_lines in reader:
+            #     if all_lines != '':
+            #         file_content += all_lines
         animal_attributes_dict = {}  # Словарь с атрибутами животных {название атрибута: название значения}
         attribute_row = file_content.split('\n')
+        if attribute_row[-1] == '':
+            attribute_row.pop(-1)
+        # attribute_row.remove('')
         for i in attribute_row:
             # attribute_value_list = i.split(':')
             attribute_name, attribute_value = i.split(':')
@@ -153,10 +160,10 @@ def change_animal_data(animal_dict):
     for animal_number, animal_name in animal_dict.items():
         print(f'{animal_number}: {animal_name}')
     while not is_correct_input_animal_num:
-        user_input = input()
+        user_animal_input = input()
         try:
-            user_input_int = int(user_input)
-            if user_input_int in range(1, len(animal_dict) + 1):
+            user_animal_input_int = int(user_animal_input)
+            if user_animal_input_int in range(1, len(animal_dict) + 1):
                 is_correct_input_animal_num = True
             else:
                 raise ValueError
@@ -165,218 +172,62 @@ def change_animal_data(animal_dict):
     is_correct_input_attribute_num = False
     while not is_correct_input_attribute_num:
         print('Выберите пункт, который хотите изменить: ')
-        index = 1
+        index_for_outer_attributes = 1
         for attribute_name_rus in Animal.full_attribute_names_map.values():
-            print(f'{index}: {attribute_name_rus}')
-            index += 1
+            print(f'{index_for_outer_attributes}: {attribute_name_rus}')
+            index_for_outer_attributes += 1
+        index_for_inner_attributes = 1
+        inner_attributes_dict = {}
+        for attribute_name in Animal.full_attribute_names_map.keys():
+            inner_attributes_dict[index_for_inner_attributes] = attribute_name
+            index_for_inner_attributes += 1
         user_input_attribute = input()
         try:
             user_input_attribute_int = int(user_input_attribute)
-            if user_input_attribute_int in range(1, index + 1):
-                if user_input_attribute_int == 1:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
+            if user_input_attribute_int in range(1, index_for_outer_attributes + 1):
+                is_correct_symbols = False
+                while not is_correct_symbols:
+                    new_animal_value = input('Введите новое значение: ')
+                    if user_input_attribute_int in (1, 2, 3, 7):
                         is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value)
                         if is_rus_symbols:
                             is_correct_symbols = True
                         else:
                             print('Для данного пункта можно вводить только русские буквы')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].name)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].name = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 2:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
-                        is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value)
-                        if is_rus_symbols:
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только русские буквы')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].genus)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].genus = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 3:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
-                        is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value)
-                        if is_rus_symbols:
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только русские буквы')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].species)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].species = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 4:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
+                    elif user_input_attribute_int in (4, 5, 6):
                         if new_animal_value.isdigit():
                             is_correct_symbols = True
                         else:
                             print('Для данного пункта можно вводить только целые числа')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].avg_lifetime)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].avg_lifetime = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 5:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
-                        if new_animal_value.isdigit():
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только целые числа')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].avg_weight)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].avg_height = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 6:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
-                        if new_animal_value.isdigit():
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только целые числа')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].avg_height)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].avg_weight = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 7:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
-                        is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value)
-                        if is_rus_symbols:
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только русские буквы')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].place)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].place = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                elif user_input_attribute_int == 8:
-                    is_correct_symbols = False
-                    while not is_correct_symbols:
-                        new_animal_value = input('Введите новое значение: ')
+                    elif user_input_attribute_int == 8:
                         is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s,]+', new_animal_value)
                         if is_rus_symbols:
                             is_correct_symbols = True
                         else:
-                            print('Для данного пункта можно вводить только русские буквы')
-                    print('Применить корректировки (y/n)?')
-                    print('Значение до изменения: ', animal_dict[user_input_int].country)
-                    print('Значение после изменения: ', new_animal_value)
-                    is_correct_yes_or_no = False
-                    while not is_correct_yes_or_no:
-                        yes_or_no = input()
-                        if yes_or_no == 'y':
-                            animal_dict[user_input_int].country = new_animal_value
-                            if animal_dict[user_input_int].file_name not in changed_animal_file_names_list:
-                                changed_animal_file_names_list.append(animal_dict[user_input_int].file_name)
-                            is_correct_yes_or_no = True
-                            is_correct_input_attribute_num = True
-                        elif yes_or_no == 'n':
-                            is_correct_yes_or_no = True
-                        else:
-                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
-                else:
-                    print('Введён некорректный номер')
+                            print('Для данного пункта можно вводить только русские буквы и запятые')
+                print('Применить корректировки (y/n)?')
+                print('Значение до изменения: ',
+                      getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int]))
+                print('Значение после изменения: ', new_animal_value)
+                is_correct_yes_or_no = False
+                while not is_correct_yes_or_no:
+                    yes_or_no = input()
+                    if yes_or_no == 'y':
+                        setattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int],
+                                new_animal_value)
+                        if animal_dict[user_animal_input_int].file_name not in changed_animal_file_names_list:
+                            changed_animal_file_names_list.append(animal_dict[user_animal_input_int].file_name)
+                        is_correct_yes_or_no = True
+                        is_correct_input_attribute_num = True
+                    elif yes_or_no == 'n':
+                        is_correct_yes_or_no = True
+                    else:
+                        print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
             else:
                 raise ValueError
         except ValueError:
             print('Введён некорректный номер')
-    return animal_dict[user_input_int].file_name
+    return animal_dict[user_animal_input_int].file_name
 
 # b = change_animal_data(animal_dict)
 # print(b)
@@ -432,5 +283,13 @@ main_menu()
 
 # print(animal_dict.__dict__)
 
+# q = int(input())
+# dict = {}
+# index = 1
+# for attribute_name_rus in Animal.full_attribute_names_map.keys():
+#     print(f'{index}: {attribute_name_rus}')
+#     dict[index] = attribute_name_rus
+#     index += 1
+# print(dict)
 
 
