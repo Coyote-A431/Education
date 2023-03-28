@@ -1,6 +1,5 @@
 import os
 import re
-import pickle
 
 
 def get_path():
@@ -33,7 +32,7 @@ def get_file_list(current_path):
 # get_file_list(current_path)
 
 def get_parsed_data(current_path):
-    current_path = r'C:\Users\Unknown\Desktop\Education\Animal'
+    # current_path = r'C:\Users\Unknown\Desktop\Education\Animal'
     file_list = []
     with os.scandir(current_path) as files:
         for file in files:
@@ -67,7 +66,6 @@ def get_parsed_data(current_path):
     return animal_data_dict
 
 p = get_parsed_data(current_path)
-# print(p)
 
 class Animal:
 
@@ -106,7 +104,6 @@ def create_class_objects():
     animal_dict = {}
     index = 1
     for file_name, animal_attributes in parsed_animal_dict.items():
-        # print(animal_attributes)
         animal = Animal(name=animal_attributes['Наименование'],
                         genus=animal_attributes['Род'],
                         species=animal_attributes['Вид'],
@@ -120,13 +117,9 @@ def create_class_objects():
         # TODO добавить обработку исключения, если в файле будут не все атрибуты
         animal_dict[index] = animal
         index += 1
-    # print(animal_dict)
     return animal_dict
 
 animal_dict = create_class_objects()
-# print(animal_dict)
-# print(animal_dict[1])
-
 
 def print_animal_dict(animal_dict):
     for animal_name in animal_dict.values():
@@ -230,25 +223,14 @@ def change_animal_data(animal_dict):
     return animal_dict[user_animal_input_int].file_name
 
 # b = change_animal_data(animal_dict)
-# print(b)
-# changed_animal_file_names_list = ['Cat.txt']
 
 def save_and_exit(current_path, changed_animal_file_names_list):
-    # with open(r'C:\Users\Unknown\Desktop\Education\Animal\Cat.txt', 'w+') as writer:
-    # for animal_file_name in animal_dict.__
     for index in animal_dict:
         if animal_dict[index].file_name in changed_animal_file_names_list:
             open(current_path + '\\' + animal_dict[index].file_name, 'w').close()
             for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
-                # open(current_path + '\\' + animal_dict[index].file_name, 'w').close()
-                # del_previous_info = open(current_path + '\\' + animal_dict[index].file_name, 'r+', encoding='utf-8')
-                # del_previous_info.truncate(0)
                 with open(current_path + '\\' + animal_dict[index].file_name, 'a+', encoding='utf-8') as writer:
                     writer.write(f'{attribute_name}: {animal_dict[index].__dict__[attribute_prog_name]}\n')
-                    # print(f'{attribute_name}: {animal_dict[index].__dict__[attribute_prog_name]}')
-    # for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
-    #     print(f'{attribute_name}: {animal_dict[1].__dict__[attribute_prog_name]}')
-        # writer.write(Animal.full_attribute_names_map)
 
 # save_and_exit(current_path, changed_animal_file_names_list)
 
