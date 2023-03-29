@@ -79,25 +79,133 @@ class Animal:
                                 'country': 'Страна обитания',
                                 }
 
+    index_for_inner_attributes = 1
+    inner_attributes_dict = {}
+    for attribute_name in full_attribute_names_map.keys():
+        inner_attributes_dict[index_for_inner_attributes] = attribute_name
+        index_for_inner_attributes += 1
+
     def __init__(self, name, genus, species, avg_lifetime, avg_height, avg_weight, place, country, file_name):
-        self.name = name
-        self.genus = genus
-        self.species = species
-        self.avg_lifetime = avg_lifetime
-        self.avg_height = avg_height
-        self.avg_weight = avg_weight
-        self.place = place
-        self.country = country
-        self.file_name = file_name
+        self.__name = name
+        self.__genus = genus
+        self.__species = species
+        self.__avg_lifetime = avg_lifetime
+        self.__avg_height = avg_height
+        self.__avg_weight = avg_weight
+        self.__place = place
+        self.__country = country
+        self.__file_name = file_name
 
     def __repr__(self):
-        return self.name
+        return self.__name
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, new_animal_value):
+        if re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value):
+            self.__name = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только русские буквы')
+
+    @property
+    def genus(self):
+        return self.__genus
+
+    @genus.setter
+    def genus(self, new_animal_value):
+        if re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value):
+            self.__genus = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только русские буквы')
+
+    @property
+    def species(self):
+        return self.__species
+
+    @species.setter
+    def species(self, new_animal_value):
+        if re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value):
+            self.__species = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только русские буквы')
+
+    @property
+    def avg_lifetime(self):
+        return self.__avg_lifetime
+
+    @avg_lifetime.setter
+    def avg_lifetime(self, new_animal_value):
+        if new_animal_value.isdigit():
+            self.__avg_lifetime = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только целые числа')
+
+    @property
+    def avg_height(self):
+        return self.__avg_height
+
+    @avg_height.setter
+    def avg_height(self, new_animal_value):
+        if new_animal_value.isdigit():
+            self.__avg_height = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только целые числа')
+
+    @property
+    def avg_weight(self):
+        return self.__avg_weight
+
+    @avg_weight.setter
+    def avg_weight(self, new_animal_value):
+        if new_animal_value.isdigit():
+            self.__avg_weight = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только целые числа')
+
+    @property
+    def place(self):
+        return self.__place
+
+    @place.setter
+    def place(self, new_animal_value):
+        if re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value):
+            self.__place = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только русские буквы')
+
+    @property
+    def country(self):
+        return self.__country
+
+    @country.setter
+    def country(self, new_animal_value):
+        if re.fullmatch('[а-яА-ЯёЁ\s,]+', new_animal_value):
+            self.__country = new_animal_value
+        else:
+            print('Для данного пункта можно вводить только русские буквы и запятые')
+
+    @property
+    def file_name(self):
+        return self.__file_name
+
+    @file_name.setter
+    def file_name(self, new_animal_value):
+        self.__file_name = new_animal_value
 
     def info(self):
         attributes_dict = self.__dict__
-        attributes_dict.pop('file_name')
+        attributes_dict.pop('_file_name')
         for attribute_name, attribute_value in attributes_dict.items():
             print(self.full_attribute_names_map[attribute_name] + ': ' + attribute_value)
+
+    def set_value(self, user_animal_input_int, user_input_attribute_int, new_animal_value):
+        setattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int],
+                new_animal_value)
+        # animal_dict[user_animal_input_int]
+
 
 def create_class_objects():
     parsed_animal_dict = get_parsed_data(current_path)
@@ -120,6 +228,8 @@ def create_class_objects():
     return animal_dict
 
 animal_dict = create_class_objects()
+# animal_dict[1].name = "Кощщщщщка"
+# print(animal_dict[1].name)
 
 def print_animal_dict(animal_dict):
     for animal_name in animal_dict.values():
@@ -178,44 +288,51 @@ def change_animal_data(animal_dict):
         try:
             user_input_attribute_int = int(user_input_attribute)
             if user_input_attribute_int in range(1, index_for_outer_attributes + 1):
-                is_correct_symbols = False
-                while not is_correct_symbols:
+                # is_correct_symbols = False
+                # while not is_correct_symbols:
+                #     new_animal_value = input('Введите новое значение: ')
+                #     if user_input_attribute_int in (1, 2, 3, 7):
+                #         is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value)
+                #         if is_rus_symbols:
+                #             is_correct_symbols = True
+                #         else:
+                #             print('Для данного пункта можно вводить только русские буквы')
+                #     elif user_input_attribute_int in (4, 5, 6):
+                #         if new_animal_value.isdigit():
+                #             is_correct_symbols = True
+                #         else:
+                #             print('Для данного пункта можно вводить только целые числа')
+                #     elif user_input_attribute_int == 8:
+                #         is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s,]+', new_animal_value)
+                #         if is_rus_symbols:
+                #             is_correct_symbols = True
+                #         else:
+                #             print('Для данного пункта можно вводить только русские буквы и запятые')
+                is_corr_symb = False
+                while not is_corr_symb:
                     new_animal_value = input('Введите новое значение: ')
-                    if user_input_attribute_int in (1, 2, 3, 7):
-                        is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s]+', new_animal_value)
-                        if is_rus_symbols:
-                            is_correct_symbols = True
+                    print('Применить корректировки (y/n)?')
+                    print('Значение до изменения: ',
+                          getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int]))
+                    print('Значение после изменения: ', new_animal_value)
+                    is_correct_yes_or_no = False
+                    while not is_correct_yes_or_no:
+                        yes_or_no = input()
+                        if yes_or_no == 'y':
+                            # if getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int])) == new_animal_value:
+                            setattr(animal_dict[user_animal_input_int],
+                                    Animal.inner_attributes_dict[user_input_attribute_int],
+                                    new_animal_value)
+                            if new_animal_value == getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int]):
+                                is_corr_symb = True
+                                if animal_dict[user_animal_input_int].file_name not in changed_animal_file_names_list:
+                                    changed_animal_file_names_list.append(animal_dict[user_animal_input_int].file_name)
+                            is_correct_yes_or_no = True
+                            is_correct_input_attribute_num = True
+                        elif yes_or_no == 'n':
+                            is_correct_yes_or_no = True
                         else:
-                            print('Для данного пункта можно вводить только русские буквы')
-                    elif user_input_attribute_int in (4, 5, 6):
-                        if new_animal_value.isdigit():
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только целые числа')
-                    elif user_input_attribute_int == 8:
-                        is_rus_symbols = re.fullmatch('[а-яА-ЯёЁ\s,]+', new_animal_value)
-                        if is_rus_symbols:
-                            is_correct_symbols = True
-                        else:
-                            print('Для данного пункта можно вводить только русские буквы и запятые')
-                print('Применить корректировки (y/n)?')
-                print('Значение до изменения: ',
-                      getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int]))
-                print('Значение после изменения: ', new_animal_value)
-                is_correct_yes_or_no = False
-                while not is_correct_yes_or_no:
-                    yes_or_no = input()
-                    if yes_or_no == 'y':
-                        setattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int],
-                                new_animal_value)
-                        if animal_dict[user_animal_input_int].file_name not in changed_animal_file_names_list:
-                            changed_animal_file_names_list.append(animal_dict[user_animal_input_int].file_name)
-                        is_correct_yes_or_no = True
-                        is_correct_input_attribute_num = True
-                    elif yes_or_no == 'n':
-                        is_correct_yes_or_no = True
-                    else:
-                        print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
+                            print(f'Введите "Да" (y) или "Нет" (n) согласно регистру')
             else:
                 raise ValueError
         except ValueError:
@@ -229,10 +346,12 @@ def save_and_exit(current_path, changed_animal_file_names_list):
         if animal_dict[index].file_name in changed_animal_file_names_list:
             open(current_path + '\\' + animal_dict[index].file_name, 'w').close()
             for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
+                correct_attribute_prog_name = '_Animal__' + attribute_prog_name
                 with open(current_path + '\\' + animal_dict[index].file_name, 'a+', encoding='utf-8') as writer:
-                    writer.write(f'{attribute_name}: {animal_dict[index].__dict__[attribute_prog_name]}\n')
+                    writer.write(f'{attribute_name}: {animal_dict[index].__dict__[correct_attribute_prog_name]}\n')
 
 # save_and_exit(current_path, changed_animal_file_names_list)
+# print(animal_dict[1].__dict__)
 
 def main_menu():
     is_correct_point = False
