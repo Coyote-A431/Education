@@ -187,29 +187,21 @@ class Animal:
         else:
             print('Для данного пункта можно вводить только русские буквы и запятые')
 
-    @property
-    def file_name(self):
-        return self.__file_name
-
-    @file_name.setter
-    def file_name(self, new_animal_value):
-        self.__file_name = new_animal_value
-
     def info(self):
         attributes_dict = self.__dict__
         attributes_dict.pop('_file_name')
         for attribute_name, attribute_value in attributes_dict.items():
             print(self.full_attribute_names_map[attribute_name] + ': ' + attribute_value)
 
-    def set_value(self, user_animal_input_int, user_input_attribute_int, new_animal_value):
-        setattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int],
-                new_animal_value)
-        # animal_dict[user_animal_input_int]
-
+    # def set_value(self, user_animal_input_int, user_input_attribute_int, new_animal_value):
+    #     setattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int],
+    #             new_animal_value)
 
 def create_class_objects():
     parsed_animal_dict = get_parsed_data(current_path)
     animal_dict = {}
+    animal_file_name_dict = {}
+    result = []
     index = 1
     for file_name, animal_attributes in parsed_animal_dict.items():
         animal = Animal(name=animal_attributes['Наименование'],
@@ -223,11 +215,17 @@ def create_class_objects():
                         file_name=file_name,
                         )
         # TODO добавить обработку исключения, если в файле будут не все атрибуты
+        animal_file_name_dict[index] = file_name
         animal_dict[index] = animal
         index += 1
-    return animal_dict
+    print(animal_file_name_dict)
+    result.append(animal_dict)
+    result.append(animal_file_name_dict)
+    return result
 
-animal_dict = create_class_objects()
+animal_info_data_list = create_class_objects()
+animal_dict = animal_info_data_list[0]
+animal_file_name_dict = animal_info_data_list[1]
 # animal_dict[1].name = "Кощщщщщка"
 # print(animal_dict[1].name)
 
@@ -256,9 +254,9 @@ def show_animal_data(animal_dict):
 
 # show_animal_data(animal_dict)
 
-def change_animal_data(animal_dict):
+def change_animal_data(animal_dict, animal_file_name_dict):
     is_correct_input_animal_num = False
-    changed_animal_file_names_list = []
+    changed_animal_file_names_set = set()
     print('Выберите животное из списка: ')
     for animal_number, animal_name in animal_dict.items():
         print(f'{animal_number}: {animal_name}')
@@ -279,11 +277,11 @@ def change_animal_data(animal_dict):
         for attribute_name_rus in Animal.full_attribute_names_map.values():
             print(f'{index_for_outer_attributes}: {attribute_name_rus}')
             index_for_outer_attributes += 1
-        index_for_inner_attributes = 1
-        inner_attributes_dict = {}
-        for attribute_name in Animal.full_attribute_names_map.keys():
-            inner_attributes_dict[index_for_inner_attributes] = attribute_name
-            index_for_inner_attributes += 1
+        # index_for_inner_attributes = 1
+        # inner_attributes_dict = {}
+        # for attribute_name in Animal.full_attribute_names_map.keys():
+        #     inner_attributes_dict[index_for_inner_attributes] = attribute_name
+        #     index_for_inner_attributes += 1
         user_input_attribute = input()
         try:
             user_input_attribute_int = int(user_input_attribute)
@@ -313,7 +311,7 @@ def change_animal_data(animal_dict):
                     new_animal_value = input('Введите новое значение: ')
                     print('Применить корректировки (y/n)?')
                     print('Значение до изменения: ',
-                          getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int]))
+                          getattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int]))
                     print('Значение после изменения: ', new_animal_value)
                     is_correct_yes_or_no = False
                     while not is_correct_yes_or_no:
@@ -323,10 +321,10 @@ def change_animal_data(animal_dict):
                             setattr(animal_dict[user_animal_input_int],
                                     Animal.inner_attributes_dict[user_input_attribute_int],
                                     new_animal_value)
-                            if new_animal_value == getattr(animal_dict[user_animal_input_int], inner_attributes_dict[user_input_attribute_int]):
+                            if new_animal_value == getattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int]):
                                 is_corr_symb = True
-                                if animal_dict[user_animal_input_int].file_name not in changed_animal_file_names_list:
-                                    changed_animal_file_names_list.append(animal_dict[user_animal_input_int].file_name)
+                                # if animal_dict[user_animal_input_int].file_name not in changed_animal_file_names_list:
+                                # changed_animal_file_names_set.add(list(animal_file_name_dict.keys())[list(animal_file_name_dict.values()).index('Cat.txt')])
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
                         elif yes_or_no == 'n':
@@ -337,25 +335,27 @@ def change_animal_data(animal_dict):
                 raise ValueError
         except ValueError:
             print('Введён некорректный номер')
-    return animal_dict[user_animal_input_int].file_name
+    return user_animal_input_int
 
-# b = change_animal_data(animal_dict)
+# b = change_animal_data(animal_dict, animal_file_name_dict)
 
-def save_and_exit(current_path, changed_animal_file_names_list):
-    for index in animal_dict:
-        if animal_dict[index].file_name in changed_animal_file_names_list:
-            open(current_path + '\\' + animal_dict[index].file_name, 'w').close()
-            for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
-                correct_attribute_prog_name = '_Animal__' + attribute_prog_name
-                with open(current_path + '\\' + animal_dict[index].file_name, 'a+', encoding='utf-8') as writer:
-                    writer.write(f'{attribute_name}: {animal_dict[index].__dict__[correct_attribute_prog_name]}\n')
+def save_and_exit(current_path, changed_animal_file_names_set, animal_file_name_dict):
+    for index in animal_dict.keys():
+        if index in changed_animal_file_names_set:
+            open(current_path + '\\' + animal_file_name_dict[index], 'w').close()
+            attribute_prog_name_index = 1
+            for attribute_name in Animal.full_attribute_names_map.values():
+                # correct_attribute_prog_name = '_Animal__' + attribute_prog_name
+                new_attribute_value = getattr(animal_dict[index], Animal.inner_attributes_dict[attribute_prog_name_index])
+                with open(current_path + '\\' + animal_file_name_dict[index], 'a+', encoding='utf-8') as writer:
+                    writer.write(f'{attribute_name}: {new_attribute_value}\n')
+                attribute_prog_name_index += 1
 
 # save_and_exit(current_path, changed_animal_file_names_list)
-# print(animal_dict[1].__dict__)
 
 def main_menu():
     is_correct_point = False
-    changed_animal_file_names_list = []
+    changed_animal_file_names_set = set()
     while not is_correct_point:
         print('1: Вывести более подробную информацию о животном',
               '2: Скорректировать информацию',
@@ -366,11 +366,11 @@ def main_menu():
         if user_main_menu_choice == '1':
             show_animal_data(animal_dict)
         elif user_main_menu_choice == '2':
-            changed_animal = change_animal_data(animal_dict)
-            if changed_animal not in changed_animal_file_names_list:
-                changed_animal_file_names_list.append(changed_animal)
+            changed_animal = change_animal_data(animal_dict, animal_file_name_dict)
+            # if changed_animal not in changed_animal_file_names_list:
+            changed_animal_file_names_set.add(changed_animal)
         elif user_main_menu_choice == '3':
-            save_and_exit(current_path, changed_animal_file_names_list)
+            save_and_exit(current_path, changed_animal_file_names_set, animal_file_name_dict)
             is_correct_point = True
         elif user_main_menu_choice == '4':
             is_correct_point = True
@@ -382,15 +382,23 @@ main_menu()
 
 # TODO setattr
 
-# print(animal_dict.__dict__)
+# for i in Animal.inner_attributes_dict.keys():
+#     print(Animal.inner_attributes_dict[i])
 
-# q = int(input())
-# dict = {}
-# index = 1
-# for attribute_name_rus in Animal.full_attribute_names_map.keys():
-#     print(f'{index}: {attribute_name_rus}')
-#     dict[index] = attribute_name_rus
-#     index += 1
-# print(dict)
+# for index in animal_dict.keys():
+#     if index in range(1, 3):
+        # c = getattr(animal_dict[index], Animal.inner_attributes_dict[1])
+        # print(c)
+        # for j in changed_animal_file_names_set:
+            # c = getattr(animal_dict[j], Animal.inner_attributes_dict[att])
+        # for i in Animal.inner_attributes_dict.keys():
+            # for attribute_prog_name, attribute_name in Animal.full_attribute_names_map.items():
+            # c = getattr(animal_dict[index], Animal.inner_attributes_dict[i])
+            # print(c)
+                # correct_attribute_prog_name = '_Animal__' + attribute_prog_name
+                # c = getattr(animal_dict[j], Animal.inner_attributes_dict[attribute_prog_name])
+                # print(c)
+                # with open(current_path + '\\' + animal_file_name_dict[index], 'a+', encoding='utf-8') as writer:
+                #     writer.write(f'{attribute_name}: {animal_dict[index].__dict__[correct_attribute_prog_name]}\n')
 
 
