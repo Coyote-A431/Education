@@ -83,9 +83,6 @@ class App:
 
     def get_settings(self):
         setting = SettingsClass()
-        t_dict = {}
-        t_dict['z'] = False
-        print(t_dict)
         f = False
         while not f:
             try:
