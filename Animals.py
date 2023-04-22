@@ -3,7 +3,6 @@ import re
 
 
 class Animal:
-
     full_attribute_names_map = {'name': 'Наименование',
                                 'genus': 'Род',
                                 'species': 'Вид',
@@ -153,6 +152,7 @@ def get_path():
             print('Вы ввели несуществующий путь до файла')
     return user_path
 
+
 def get_file_list(current_path):
     animal_list = []
     with os.scandir(current_path) as files:
@@ -160,6 +160,7 @@ def get_file_list(current_path):
             animal_list.append(file.name)
     # print(animal_list)
     return animal_list
+
 
 def get_parsed_data(current_path):
     # current_path = r'C:\Users\Unknown\Desktop\Education\Animal'
@@ -195,6 +196,7 @@ def get_parsed_data(current_path):
         animal_data_dict[file_name] = animal_attributes_dict
     return animal_data_dict
 
+
 def create_class_objects():
     parsed_animal_dict = get_parsed_data(current_path)
     animal_dict = {}
@@ -219,9 +221,11 @@ def create_class_objects():
     result.append(animal_file_name_dict)
     return result
 
+
 def print_animal_dict(animal_dict):
     for animal_name in animal_dict.values():
         print(f'{animal_name}')
+
 
 def show_animal_data(animal_dict):
     is_correct_input = False
@@ -239,6 +243,7 @@ def show_animal_data(animal_dict):
         except ValueError:
             print('Введён некорректный номер')
     animal_dict[user_input_int].info(user_input_int)
+
 
 def change_animal_data(animal_dict):
     is_correct_input_animal_num = False
@@ -271,7 +276,8 @@ def change_animal_data(animal_dict):
                     new_animal_value = input('Введите новое значение: ')
                     print('Применить корректировки (y/n)?')
                     print('Значение до изменения: ',
-                          getattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int]))
+                          getattr(animal_dict[user_animal_input_int],
+                                  Animal.inner_attributes_dict[user_input_attribute_int]))
                     print('Значение после изменения: ', new_animal_value)
                     is_correct_yes_or_no = False
                     while not is_correct_yes_or_no:
@@ -280,7 +286,8 @@ def change_animal_data(animal_dict):
                             setattr(animal_dict[user_animal_input_int],
                                     Animal.inner_attributes_dict[user_input_attribute_int],
                                     new_animal_value)
-                            if new_animal_value == getattr(animal_dict[user_animal_input_int], Animal.inner_attributes_dict[user_input_attribute_int]):
+                            if new_animal_value == getattr(animal_dict[user_animal_input_int],
+                                                           Animal.inner_attributes_dict[user_input_attribute_int]):
                                 is_corr_symb = True
                             is_correct_yes_or_no = True
                             is_correct_input_attribute_num = True
@@ -295,6 +302,7 @@ def change_animal_data(animal_dict):
             print('Введён некорректный номер')
     return user_animal_input_int
 
+
 def save_and_exit(current_path, changed_animal_file_names_set, animal_file_name_dict):
     for index in animal_dict.keys():
         if index in changed_animal_file_names_set:
@@ -308,6 +316,7 @@ def save_and_exit(current_path, changed_animal_file_names_set, animal_file_name_
                 attribute_prog_name_index += 1
             with open(current_path + '\\' + animal_file_name_dict[index], 'w', encoding='utf-8') as writer:
                 writer.write(f'{new_full_string_info}')
+
 
 def main_menu():
     is_correct_point = False
@@ -352,10 +361,4 @@ animal_file_name_dict = animal_info_data_list[1]
 # save_and_exit(current_path, changed_animal_file_names_list)
 
 main_menu()
-
-
-
-
-
-
 
