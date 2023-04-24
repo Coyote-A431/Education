@@ -15,7 +15,7 @@ class Guess_Test:
 
     def random_number(self):
         random_number = random.randint(1, 100)
-        print(random_number)
+        # print(random_number)
         return random_number
 
     def validation(self):

@@ -1,3 +1,5 @@
+import random
+
 class datetime2:
 
     MONTHS_WITH_MAX_DAYS_SET = {1, 3, 5, 7, 8, 10, 12}
@@ -136,7 +138,8 @@ class datetime2:
         self.print_number_day()
 
 
-
+random_date = datetime2(1)
+random_date.all_func()
 
 test = datetime2()
 test.all_func()
