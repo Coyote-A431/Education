@@ -14,7 +14,7 @@ class datetime2:
 
     DAYS_IN_MONTHS = {1: 31, 2: 29, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
-    def __init__(self, random_date = False):
+    def __init__(self, random_date=False):
         self.random_date = random_date
         data_list = self.validation(random_date)
         self.day = data_list[0]
