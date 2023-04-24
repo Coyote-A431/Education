@@ -49,11 +49,11 @@ def print_bmi(weight, height, age):
     print(bmi)
     print(old)
 
-weight = validation('weight')
-height = validation('height')
-age = validation('age')
-
-print_bmi(weight, height, age)
+# weight = validation('weight')
+# height = validation('height')
+# age = validation('age')
+#
+# print_bmi(weight, height, age)
 
 
 ### 
